@@ -74,13 +74,17 @@ class PolicySemanticAnalyzer:
         self, statement: RoleRule, role_permissions: dict[str, set[str]]
     ) -> None:
         if statement.role_name in role_permissions:
-            raise SemanticError(f"Role {statement.role_name!r} is defined more than once.")
+            raise SemanticError(
+                f"Role {statement.role_name!r} is defined more than once."
+            )
 
         permissions = set(statement.permissions)
         unknown_permissions = permissions - ALLOWED_PERMISSIONS
         if unknown_permissions:
             joined = ", ".join(sorted(unknown_permissions))
-            raise SemanticError(f"Unknown permission(s) for role {statement.role_name}: {joined}.")
+            raise SemanticError(
+                f"Unknown permission(s) for role {statement.role_name}: {joined}."
+            )
 
         if statement.role_name == "patient":
             unsafe = permissions & UNSAFE_PATIENT_PERMISSIONS
@@ -97,9 +101,14 @@ class PolicySemanticAnalyzer:
         explicit_denies: dict[str, set[str]],
     ) -> None:
         if statement.role_name not in role_permissions:
-            raise SemanticError(f"Cannot deny permission from undefined role {statement.role_name!r}.")
+            raise SemanticError(
+                f"Cannot deny permission from undefined role "
+                f"{statement.role_name!r}."
+            )
+
         if statement.permission not in ALLOWED_PERMISSIONS:
             raise SemanticError(f"Unknown denied permission {statement.permission!r}.")
+
         explicit_denies.setdefault(statement.role_name, set()).add(statement.permission)
 
     def _analyze_mask_rule(
@@ -109,7 +118,11 @@ class PolicySemanticAnalyzer:
         masks: dict[str, set[str]],
     ) -> None:
         if statement.role_name not in role_permissions:
-            raise SemanticError(f"Cannot mask field for undefined role {statement.role_name!r}.")
+            raise SemanticError(
+                f"Cannot mask field for undefined role {statement.role_name!r}."
+            )
+
         if statement.field_name not in ALLOWED_MASK_FIELDS:
             raise SemanticError(f"Unknown mask field {statement.field_name!r}.")
+
         masks.setdefault(statement.role_name, set()).add(statement.field_name)
