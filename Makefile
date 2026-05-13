@@ -37,3 +37,10 @@ docker-shell:
 clean:
 > rm -rf Docs/pdoc .pytest_cache .mypy_cache .coverage htmlcov
 > find . -type d -name "__pycache__" -exec rm -rf {} +
+# CSCI450 compiler targets
+.PHONY: compiler compiler-test
+compiler:
+> python -m apps.compiler.cli data/policies/cj_hospital_policy.cjsp -o data/compiled_policy.json
+
+compiler-test:
+> PYTHONPATH=. pytest tests/test_policy_compiler.py

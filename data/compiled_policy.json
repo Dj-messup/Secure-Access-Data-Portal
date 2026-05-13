@@ -1,0 +1,34 @@
+{
+  "roles": {
+    "admin": [
+      "manage_users",
+      "review_logs",
+      "view_full_record"
+    ],
+    "patient": [
+      "view_own_record"
+    ],
+    "provider": [
+      "view_masked_record"
+    ]
+  },
+  "denies": {
+    "patient": [
+      "review_logs"
+    ]
+  },
+  "masks": {
+    "patient": [
+      "diagnosis",
+      "patient_id"
+    ],
+    "provider": [
+      "ssn"
+    ]
+  },
+  "statement_count": 7,
+  "metadata": {
+    "language": "CJ Secure Policy Language",
+    "source": "data/policies/cj_hospital_policy.cjsp"
+  }
+}
