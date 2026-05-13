@@ -1,0 +1,12 @@
+# CJ Secure Policy Language demo file
+# Semicolons end each compiler statement.
+
+role provider can view_masked_record;
+role patient can view_own_record;
+role admin can review_logs, manage_users, view_full_record;
+
+# These demonstrate semantic policy rules beyond basic parsing.
+deny patient review_logs;
+mask ssn for provider;
+mask diagnosis for patient;
+mask patient_id for patient;
